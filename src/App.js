@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react'
-import VehicleMake from './VehicleMake';
-import VehicleModel from './VehicleModel';
+import VehicleMake from './Components/VehicleMake';
+import VehicleModel from './Components/VehicleModel';
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 
 
