@@ -206,10 +206,10 @@ input {
   width: 10%;
 }
 .model-list .list > .name {
-  width: 40%;
+  width: 30%;
 }
 .model-list .list > .makeid {
-  width: 10%;
+  width: 20%;
 }
 .model-list .list > .abrv {
   width: 40%;
