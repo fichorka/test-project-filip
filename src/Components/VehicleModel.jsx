@@ -54,7 +54,7 @@ class VehicleMake extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const name = e.target.name.value;
-    const makeId = parseInt(e.target.makeId.value);
+    const makeId = e.target.makeId.value;
     if (name !== '' && Number.isInteger(parseInt(makeId))) {
       this.props.store.addData(name, makeId);
       this.handleSortData('re-sort');
@@ -73,9 +73,11 @@ class VehicleMake extends Component {
     document.getElementById(sortInfo[2].toLowerCase()+'-caption').innerHTML=sortInfo[2] + ' ' + sortInfo[1];
   }
   
+  
   handlePageChange(e) {
     this.props.store.renderState.page = (e.target.value)
   }
+  
   
   render() {
     const store = this.props.store;

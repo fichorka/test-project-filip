@@ -16,7 +16,7 @@ class VehicleMakeStore {
   
   pageCount() {
     console.log('pageCount');
-    if (this[this.renderState.activeData].length === 0 || this.renderState.quantity === 'all') {
+    if ( this[this.renderState.activeData].length === 0 || this.renderState.quantity === 'all') {
       return 1;
     } else {
       return Math.ceil(this[this.renderState.activeData].length / this.renderState.quantity);
@@ -41,7 +41,6 @@ class VehicleMakeStore {
     } else {
       return this.renderState.page * this.renderState.quantity;
     }
-    
   }
   
   
@@ -166,19 +165,7 @@ class VehicleMakeStore {
     console.log('getData');
     return this[this.renderState.activeData].slice(this.startIndex, this.lastIndex);
   }
-  
-  //TODO: in case of no match return accordingly:
-  getItemById = (id) => {
-    console.log('getItemById')
-    for (let i=0; i < this.data.length; i++) {
-      if (this.data[i].Id === id) {
-        return this.data[i];
-      }
-    }
-    return '';
-  }
 
-  
 }
 
 const vehicleMakeStore = new VehicleMakeStore();

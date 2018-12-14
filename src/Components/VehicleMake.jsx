@@ -52,8 +52,8 @@ class VehicleMake extends Component {
   
   handleSubmit(e) {
     e.preventDefault();
-    const name = e.target.name.value;
-    const abrv = e.target.abrv.value;
+    const name = String(e.target.name.value);
+    const abrv = String(e.target.abrv.value);
     if (name !== '' && abrv !== '') {
       this.props.store.addData(name, abrv);
       this.handleSortData('re-sort');

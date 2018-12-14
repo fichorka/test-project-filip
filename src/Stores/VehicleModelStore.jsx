@@ -16,7 +16,7 @@ class VehicleModelStore {
   
   pageCount() {
     console.log('pageCount');
-    if (this[this.renderState.activeData].length === 0) {
+    if ( this[this.renderState.activeData].length === 0 || this.renderState.quantity === 'all' ) {
       return 1;
     } else {
       return Math.ceil(this[this.renderState.activeData].length / this.renderState.quantity);
@@ -62,8 +62,8 @@ class VehicleModelStore {
     if (newQuantity === 'all') {
       this.renderState.quantity = 'all';
     } else {
-    this.renderState.quantity = newQuantity;
-  }
+      this.renderState.quantity = newQuantity;
+    }
     this.renderState.page = 1;
   }
   
@@ -167,17 +167,7 @@ class VehicleModelStore {
     return this[this.renderState.activeData].slice(this.startIndex, this.lastIndex);
   }
   
-  //TODO: in case of no match return accordingly:
-  getItemById = (id) => {
-    console.log('getItemById()');
-    for (let i=0; i < this.data.length; i++)
-      if (this.data[i].Id === id) {
-        return this.data[i];
-      }
-    }
+}
 
-    
-  }
-
-  const vehicleModelStore = new VehicleModelStore();
-  export default vehicleModelStore;
+const vehicleModelStore = new VehicleModelStore();
+export default vehicleModelStore;
