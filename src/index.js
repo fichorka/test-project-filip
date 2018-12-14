@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';
 import './index.css';
 import App from './App';
-import store from './Stores/VehicleStore';
+import rootStore from './Stores/RootStore';
 
 const Root = (
-    <Provider store={store}>
+    <Provider rootStore={rootStore}>
       <App />
     </Provider>
   );

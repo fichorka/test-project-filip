@@ -1,4 +1,4 @@
-This project was made with [Create React App](https://github.com/facebook/create-react-app), and packages: mobx and mobx-react using decorators.
+This project was made with [Create React App](https://github.com/facebook/create-react-app), and packages: react-router-dom, and mobx and mobx-react using decorators.
 
 ##  Install
 
