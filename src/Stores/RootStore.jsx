@@ -2,9 +2,13 @@ import { observable, action } from 'mobx';
 import vehicleMakeStore from './VehicleMakeStore.jsx';
 import vehicleModelStore from './VehicleModelStore';
 
+
 class RootStore {
+  
+  
   @observable vehicleMakeStore = vehicleMakeStore;
   @observable vehicleModelStore = vehicleModelStore;
+  
   
   @action getAbrv = () => {
     console.log('getAbrv()');
@@ -19,12 +23,12 @@ class RootStore {
           
           modelStore.data[i].Abrv = makeStore.data[j].Abrv;
         }
-        
-        
       }
     }
   }
+  
+  
 }
 
-  const rootStore = new RootStore();
-  export default rootStore;
+const rootStore = new RootStore();
+export default rootStore;

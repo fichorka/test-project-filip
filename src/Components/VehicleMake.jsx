@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import Create from './Create';
+import Pager from './Pager';
 
 
 @inject(stores => ({
-  store: stores.rootStore.vehicleMakeStore
+  store: stores.rootStore.vehicleMakeStore,
+  rootStore: stores.rootStore
 }))
 @observer
 class VehicleMake extends Component {
@@ -16,25 +19,12 @@ class VehicleMake extends Component {
     for( let i=0; i < list.length; i++ ) {
       result[i] = [];
       for ( let key in list[i] ) {
-        result[i].push(<li key={i+key} className={"item " + key.toLowerCase()}>{list[i][key]}</li>);
+        result[i].push(<td key={i+key} className={"item " + key.toLowerCase()}>{list[i][key]}</td>);
       }
     }
     
     for ( let i=0; i < result.length; i++) {
-      result[i] = <ul key={i} className="list">{result[i]}</ul>;
-    }
-    return result;
-  }
-  
-  
-  renderPageList(pageCount) {
-    let result = [];
-    if (pageCount === 0) {
-      result = <option key={1} value={1}> {1} </option>;
-    } else {
-      for (let i = 1; i < pageCount+1; i++) {
-        result.push(<option key={i} value={i}> {i} </option>);
-      }
+      result[i] = <tr key={i} className="list">{result[i]}</tr>;
     }
     return result;
   }
@@ -45,34 +35,14 @@ class VehicleMake extends Component {
   }
   
   
-  handleQuantityChange(e) {
-    this.props.store.quantitySetter(e.target.value);
-  }
-  
-  
-  handleSubmit(e) {
-    e.preventDefault();
-    const name = String(e.target.name.value);
-    const abrv = String(e.target.abrv.value);
-    if (name !== '' && abrv !== '') {
-      this.props.store.addData(name, abrv);
-      this.handleSortData('re-sort');
-    }
-  }
-  
-  
   handleSortData(field) {  
     const sortInfo = this.props.store.sortData(field);
     if (sortInfo[0] !== '') {
       document.getElementById(sortInfo[0].toLowerCase()+'-caption').innerHTML = sortInfo[0];
     }
-
     document.getElementById(sortInfo[2].toLowerCase()+'-caption').innerHTML=sortInfo[2] + ' ' + sortInfo[1];
   }
   
-  handlePageChange(e) {
-    this.props.store.renderState.page = (e.target.value)
-  }
   
   render() {
     const store = this.props.store;
@@ -81,7 +51,6 @@ class VehicleMake extends Component {
     const itemCount = store.count;
     const pageCount = store.pageCount();
     const currentPage = store.renderState.page;
-    const quantity = store.renderState.quantity;
     const displayedItems = store.displayedItems;
     const startIndex = store.startIndex;
     const lastIndex = store.lastIndex;
@@ -90,62 +59,29 @@ class VehicleMake extends Component {
     return (
       <div className="make-list">
       
-      <div className="create-form">
-      <div className="description">
-      Create new vehicle make:
-      </div>
-        <form onSubmit={e => this.handleSubmit(e)}>
-        <div className="input-area">
-        <label htmlFor="name">Name:</label>
-        <input type="text" id="name" placeholder="Name" />
-        </div>
-        <div className="input-area">
-        <label htmlFor="abrv">Abbrevation:</label>
-        <input type="text" id="abrv" placeholder="Abrv" />
-        </div>
-        <button type="submit"> ADD MAKE </button>
-        </form>
-      </div>
+      <Create store={this.props.store} />
       
       <div className="store-info">
-      Matched items: <span className="info-value">{itemCount}</span><br />
-      Current page: <span className="info-value">{currentPage}</span><br />
-      Items per page: <span className="info-value">{quantity}</span><br />
-      Displayed Items: <span className="info-value">{displayedItems}</span><br />
-      Start index: <span className="info-value">{startIndex}</span><br />
-      Last index: <span className="info-value">{lastIndex}</span><br />
-      Search term: <span className="info-value">{searchTerm}</span><br />
+        Matched items: <span className="info-value">{itemCount}</span><br />
+        Current page: <span className="info-value">{currentPage}</span><br />
+        Displayed Items: <span className="info-value">{displayedItems}</span><br />
+        Start index: <span className="info-value">{startIndex}</span><br />
+        Last index: <span className="info-value">{lastIndex}</span><br />
+        Search term: <span className="info-value">{searchTerm}</span><br />
       </div>
       
       <div className="search-input">
-      search for vehicle make:
-      <input type="text" id="searchInput" onChange={(event) => {this.handleSearch(event)}} placeholder="Type search term here" />
+        search for vehicle make:
+        <input type="text" id="searchInput" onChange={(event) => {this.handleSearch(event)}} placeholder="Type search term here" />
       </div>
       
-      <div className="quantity-select">
-      items per page: 
-      <select  value={store.renderState.quantity} className="select" onChange={(event) => {this.handleQuantityChange(event)}}>
-      <option value={10}>10</option>
-      <option value={20}>20</option>
-      <option value={30}>30</option>
-      <option value={50}>50</option>
-      <option value={100}>100</option>
-      <option value={'all'}>All</option>
-      </select>
-      </div>
+      <Pager store={this.props.store} />
       
-      <div className="page-select">
-      page: 
-      <select value={store.renderState.page} id="pageSelect" className="select" onChange={(event) => {this.handlePageChange(event)}}>
-      {this.renderPageList(pageCount)}
-      </select>
-      of {pageCount}
-      </div>
+      <div className="list-caption"><p id="id-caption" className="caption id" onClick={() => {this.handleSortData('Id')}}>{store.captionText('Id')}</p><p id="name-caption" className="caption name" onClick={() => {this.handleSortData('Name')}}>{store.captionText('Name')}</p><p id="abrv-caption" className="caption abrv" onClick={() => {this.handleSortData('Abrv')}}>{store.captionText('Abrv')}</p></div>
       
-      <div className="list-caption"><p id="id-caption" className="caption id" onClick={() => {this.handleSortData('Id')}}>Id</p><p id="name-caption" className="caption name" onClick={() => {this.handleSortData('Name')}}>Name</p><p id="abrv-caption" className="caption abrv" onClick={() => {this.handleSortData('Abrv')}}>Abrv</p></div>
-      
+      <table className="data-table">
       {this.renderItems(store)}
-      
+      </table>
       </div>
       );
   }

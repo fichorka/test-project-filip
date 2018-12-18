@@ -10,8 +10,13 @@ class VehicleMakeStore {
     page: 1,
     quantity: 10,
     sortedBy: "Id",
-    order: '',
+    order: 'asc',
   };
+  
+  
+  storeName() {
+    return 'vehicleMakeStore';
+  }
   
   
   pageCount() {
@@ -21,6 +26,14 @@ class VehicleMakeStore {
     } else {
       return Math.ceil(this[this.renderState.activeData].length / this.renderState.quantity);
     }
+  }
+  
+  
+  captionText(target) {
+    if (this.renderState.sortedBy === target) {
+      return target + ' ' + this.renderState.order;
+    }
+    return target;
   }
   
   
@@ -75,6 +88,7 @@ class VehicleMakeStore {
       Name: name,
       Abrv: abrv
     });
+    this.sortData('re-sort');
   }
   
   
@@ -88,6 +102,8 @@ class VehicleMakeStore {
     if (newSortKey === 're-sort') {
       newSortKey = previousSortKey;
       newOrder = previousOrder;
+    } else if (newSortKey !== previousSortKey) {
+      newOrder = 'asc';
     } else if (previousOrder === 'asc') {
       newOrder = 'desc';
     } else {
@@ -97,19 +113,15 @@ class VehicleMakeStore {
     if (newSortKey === 'Id') {
       if (newOrder === 'desc') {
         this.data.replace(this.data.slice().sort((a, b) => b[newSortKey] - a[newSortKey] ));
-        newOrder = 'desc';
       } else {
         this.data.replace(this.data.slice().sort((a, b) => a[newSortKey] - b[newSortKey] ));
-        newOrder = 'asc';
       }
     } else {
       let factor = 1;
-      if (newSortKey === previousSortKey && newOrder === 'desc') {
+      if ( newOrder === 'desc' ) {
         factor = -1;
-        newOrder = 'desc';
-      } else {
-        newOrder = 'asc';
       }
+      
       this.data.replace(this.data.slice().sort((a, b) => {
         if (a[newSortKey] > b[newSortKey]) {
           return factor;
