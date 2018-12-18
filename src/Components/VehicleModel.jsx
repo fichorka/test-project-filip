@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Create from './Create';
 import Pager from './Pager';
+import StoreInfo from './StoreInfo';
 
 
 @inject(stores => ({
@@ -49,29 +50,13 @@ class VehicleMake extends Component {
     const store = this.props.store;
     this.props.rootStore.getAbrv();
     
-    //decalaring variables:
-    const itemCount = store.count;
-    const pageCount = store.pageCount();
-    const currentPage = store.renderState.page;
-    const displayedItems = store.displayedItems;
-    const startIndex = store.startIndex;
-    const lastIndex = store.lastIndex;
-    const searchTerm = store.renderState.searchTerm;
     
     return (
       <div className="model-list">
       
       <Create store={this.props.store} />
       
-      <div className="store-info">
-      
-      Matched items: <span className="info-value">{itemCount}</span><br />
-      Current page: <span className="info-value">{currentPage}</span><br />
-      Displayed Items: <span className="info-value">{displayedItems}</span><br />
-      Start index: <span className="info-value">{startIndex}</span><br />
-      Last index: <span className="info-value">{lastIndex}</span><br />
-      Search term: <span className="info-value">{searchTerm}</span><br />
-      </div>
+      <StoreInfo store={this.props.store} />
       
       <div className="search-input">
       search for vehicle model:
