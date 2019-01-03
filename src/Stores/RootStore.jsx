@@ -1,33 +1,13 @@
-import { observable, action } from 'mobx';
-import vehicleMakeStore from './VehicleMakeStore.jsx';
-import vehicleModelStore from './VehicleModelStore';
+import { observable } from 'mobx';
+import vehicleStore from './VehicleStore.jsx';
+import listStore from './ListStore';
+import createStore from './CreateStore';
 
 
 class RootStore {
-  
-  
-  @observable vehicleMakeStore = vehicleMakeStore;
-  @observable vehicleModelStore = vehicleModelStore;
-  
-  
-  @action getAbrv = () => {
-    console.log('getAbrv()');
-    const makeStore = this.vehicleMakeStore;
-    const modelStore = this.vehicleModelStore;
-    
-    for ( let i=0; i < modelStore.data.length; i++ ) {
-      const makeId = modelStore.data[i].MakeId;
-      
-      for (let j=0; j < makeStore.data.length; j++) {
-        if ( makeId === makeStore.data[j].Id ) {
-          
-          modelStore.data[i].Abrv = makeStore.data[j].Abrv;
-        }
-      }
-    }
-  }
-  
-  
+  @observable vehicleStore = vehicleStore;
+  @observable listStore = listStore;
+  @observable createStore = createStore;
 }
 
 const rootStore = new RootStore();
