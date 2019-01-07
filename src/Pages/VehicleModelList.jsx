@@ -19,8 +19,9 @@ class VehicleModelList extends Component {
   render() {
     return (
       <div>
+      <h3>VehicleModelStore</h3>
       <FilterComponent />
-      <List url={this.props.match.url} />
+      <List baseUrl='/vehicle-model' />
       </div>
       );
   }

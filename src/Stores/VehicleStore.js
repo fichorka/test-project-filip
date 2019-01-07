@@ -69,8 +69,6 @@ class VehicleStore {
     }
   }
   
-  
-  
   @action syncData = () => {
     const makeLength = this.vehicleMakeStore.data.length;
     const modelLength = this.vehicleModelStore.data.length;
@@ -91,17 +89,8 @@ class VehicleStore {
   
   //ˇˇCRUD
   
-  @action addElement = (e) => {
-    e.preventDefault();
-    const newElement = {};
-    newElement.Id = this.nextId;
-    newElement.Name = e.target.Name.value;
-    if (this.targetStore === 'vehicleMakeStore') {
-      newElement.Abrv = e.target.Abrv.value;
-    } else {
-      newElement.MakeId = Number(e.target.MakeId.value);
-    }
-    this[this.targetStore].data.push(newElement);
+  @action addElement = (element) => {
+    this[this.targetStore].data.push(element);
     this[this.targetStore].nextId++;
     this.syncData();
     this.sortData([{
@@ -115,24 +104,34 @@ class VehicleStore {
     return this[this.targetStore][this.targetData].slice(startIndex, (startIndex + range));
   }
   
+  @computed get makeCount() {
+    return this.vehicleMakeStore.data.length;
+  }
+  
+  getAllAbrv() {
+    const count = this.makeCount;
+    let result = [];
+    for (let i=0; i < count; i++) {
+      let field = this.vehicleMakeStore.data[i];
+      result.push({Id: field.Id, Abrv: field.Abrv});
+    }
+    return result;
+  }
+  
   getById(targetId) {
     const index = this.idToIndex(targetId);
-    return this[this.targetStore].data[index];
+    if (this[this.targetStore].data[index]) {
+      return [true, this[this.targetStore].data.slice(index, index+1)[0]];
+    } else {
+      return [false];
+    }
   }
   
   
-  @action updateData = (targetId, e) => {
-    e.preventDefault();
-    const index = this.idToIndex(targetId);
-    const updatedElement = {};
-    updatedElement.Id = Number(targetId);
-    updatedElement.Name = e.target.Name.value;
-    if( this.targetStore === 'vehicleMakeStore') {
-      updatedElement.Abrv = e.target.Abrv.value;
-    } else {
-      updatedElement.MakeId = Number(e.target.MakeId.value);
-    }
-    this[this.targetStore].data[index] = updatedElement;
+  @action updateElement = (newElement) => {
+    const id = Number(newElement.Id);
+    const index = this.idToIndex(id);
+    this[this.targetStore].data[index] = newElement;
     this.syncData();
   }
   
@@ -148,8 +147,36 @@ class VehicleStore {
   
   //Helpers:
   
+  validate(target, targetId) {
+    const field = target.id;
+    let targetElement;
+    const value = target.value;
+    let isMake;
+    if (this.targetStore === 'vehicleMakeStore') {
+      isMake = true;
+    } else {
+      isMake = false;
+    }
+    for(let i=0; i < this.dataCount; i++) {
+      targetElement = this[this.targetStore].data[i];
+      if (targetId !== 'none') {
+        if (isMake && targetId === targetElement.Id) {
+          continue;
+        } else if (!isMake && targetId !== targetElement.MakeId) {
+          console.log('makeId skip ' + targetId);
+          continue;
+        }
+      }
+      if (targetElement[field] === value) {
+        console.log('duplicate Element: ' + field);
+        return false;
+      }
+    }
+    return true
+  }
+  
   @computed get nextId() {
-    return this[this.targetStore].nextId;
+    return Number(this[this.targetStore].nextId);
   }
   
   @action setTargetStore = (target) => {
@@ -164,6 +191,7 @@ class VehicleStore {
         return i;
       }
     }
+    return false;
   }
   
   @computed get dataCount() {
@@ -175,12 +203,6 @@ class VehicleStore {
     return this[this.targetStore][this.targetData].length;
     
   }
-  
-  
-  //^^Helpers
-  
-  
-  
 }
 
 const vehicleStore = new VehicleStore();

@@ -14,7 +14,7 @@ class List extends Component {
   
   
   componentDidMount() {
-    this.props.listStore.setSpecialVal(this.props.url);
+    this.props.listStore.setSpecialVal(this.props.baseUrl);
   }
   
   componentWillUnmount() {
@@ -25,6 +25,7 @@ class List extends Component {
   render() {
     const {store} = this.props;
     const {listStore} = this.props;
+    const path = this.props.baseUrl;
     
     return (
       <div>
@@ -61,7 +62,7 @@ class List extends Component {
           minWidth: 60,
           maxWidth: 70,
           sortable: false,
-          Cell: props => <span><Link className="actions" to={`${this.props.url}/edit-element/${props.value}`}><i className="material-icons">edit</i></Link> <span className="actions" onClick={(event) => store.deleteById(props.value, event)}><i className="material-icons">delete_forever</i></span></span>
+          Cell: props => <span><Link className="actions" to={`${path}/edit-create-${props.value}`}><i className="material-icons">edit</i></Link> <span className="actions" onClick={(event) => store.deleteById(props.value, event)}><i className="material-icons">delete_forever</i></span></span>
         }
         ]}
         

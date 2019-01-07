@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { inject, observer } from 'mobx-react';
-
+import { inject } from 'mobx-react';
 
 @inject(stores => ({
-  store: stores.rootStore.homeStore
+  store: stores.rootStore.addNewSelectStore
 }))
-@observer
-class Home extends Component {
+class AddNewSelect extends Component {
   
   render() {
     const {store} = this.props;
@@ -20,8 +18,8 @@ class Home extends Component {
       <div className="section">
         
         <div className="row">
-        <Link to={store.button1Link} className="btn-large blue-grey col s6 m4 l3 offset-m1 offset-l2">{store.button1}</Link>
-        <Link to={store.button2Link} className="btn-large blue-grey col s6 m4 l3 offset-m2 offset-l2">{store.button2}</Link>
+        <Link to="/vehicle-make/edit-create-new" className="btn-large blue-grey col s6 m4 l3 offset-m1 offset-l2">{store.button1}</Link>
+        <Link to="/vehicle-model/edit-create-new" className="btn-large blue-grey col s6 m4 l3 offset-m2 offset-l2">{store.button2}</Link>
         </div>
       
       </div>
@@ -33,4 +31,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default AddNewSelect;

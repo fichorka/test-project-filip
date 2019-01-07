@@ -12,7 +12,7 @@ class ListStore {
   
   
   setSpecialVal(url) {
-    if (url === '/vehicle-model-list' ) {
+    if (url === '/vehicle-model' ) {
       this.specialVal.show = true;
     } else {
       this.specialVal.show = false;

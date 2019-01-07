@@ -10,9 +10,9 @@ class Navbar extends Component {
       <div className="nav-wrapper grey ">
       <Link to="/" className="brand-logo right">Vehicle stores</Link>
       <ul id="nav-mobile" className="left hide-on-small-only">
-        <li><Link to="/vehicle-make-list">Vehicle Makes</Link></li>
-        <li><Link to="/vehicle-model-list">Vehicle Models</Link></li>
-        <li><Link to="/create">Add new</Link></li>
+        <li><Link to="/vehicle-make/list">Vehicle Makes</Link></li>
+        <li><Link to="/vehicle-model/list">Vehicle Models</Link></li>
+        <li><Link to="/add-new">Add new</Link></li>
       </ul>
       </div>
       </nav>

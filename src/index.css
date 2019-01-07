@@ -7,6 +7,18 @@
   color:#263238 ;
 }
 
+.error {
+  color: #ff5252;
+}
+.good-input {
+  color: #1565c0;
+  font-size:12px;
+}
+.bad-input {
+  color: #ff1744;
+  font-size:12px;
+}
+
 /* Override materialize setting */
 .-pageSizeOptions > select {
   display:block;
